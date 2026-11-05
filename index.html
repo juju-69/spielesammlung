@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1026">
+<title>Spielesammlung</title>
+<style>
+:root{--g:rgba(255,255,255,.14);--b:rgba(255,255,255,.28);--t:#f8fafc;--m:#cbd5e1}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{min-height:100%;background:#0b1026}
+body{margin:0;min-height:100dvh;font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--t);
+background:radial-gradient(60vmax 60vmax at 10% 10%,#06b6d4aa,transparent 60%),radial-gradient(55vmax 55vmax at 90% 20%,#6366f1aa,transparent 60%),radial-gradient(60vmax 60vmax at 50% 105%,#ec489988,transparent 60%),linear-gradient(160deg,#0b1026,#0f2a4a);background-attachment:fixed}
+main{max-width:640px;margin:0 auto;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+@media(min-width:900px){main{max-width:760px}}
+h1{font-size:clamp(1.5rem,5vw,2.1rem);margin:.4em 0 .6em;text-align:center;background:linear-gradient(90deg,#67e8f9,#a5b4fc,#f9a8d4);-webkit-background-clip:text;background-clip:text;color:transparent}
+h3{margin:.8em 0 .4em}
+.card{background:var(--g);border:1px solid var(--b);border-radius:22px;padding:clamp(14px,4vw,24px);margin-bottom:14px;box-shadow:0 8px 32px #0006,inset 0 1px 0 #fff4;-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%)}
+@supports not (backdrop-filter:blur(1px)){.card{background:rgba(30,41,82,.88)}}
+input,select,button{font:inherit;min-height:48px;padding:10px 14px;border-radius:14px;border:1px solid var(--b);background:rgba(255,255,255,.12);color:var(--t);width:100%;margin:5px 0;outline:0}
+input::placeholder{color:var(--m)}select option{color:#111}
+input:focus,select:focus{border-color:#67e8f9;box-shadow:0 0 0 3px #67e8f944}
+button{background:linear-gradient(135deg,#06b6d4,#6366f1);border:0;font-weight:600;cursor:pointer;box-shadow:0 4px 16px #06b6d455;transition:transform .15s,filter .15s}
+button:hover:not(:disabled){filter:brightness(1.12)}button:active:not(:disabled){transform:scale(.97)}
+button:disabled{opacity:.45;cursor:default;box-shadow:none}
+button.s{background:rgba(255,255,255,.12);border:1px solid var(--b);box-shadow:none}
+hr{border:0;border-top:1px solid var(--b);margin:14px 0}
+.code{font-size:clamp(1.9rem,9vw,2.6rem);letter-spacing:.22em;font-weight:800;text-align:center;text-shadow:0 0 24px #67e8f9aa}
+.pl{display:flex;align-items:center;gap:10px;padding:8px 12px;margin:5px 0;border-radius:12px;background:rgba(255,255,255,.1)}
+.dot{width:14px;height:14px;border-radius:50%;box-shadow:0 0 10px currentColor}
+svg{display:block;width:100%;max-width:min(100%,80dvh);margin:0 auto 10px;filter:drop-shadow(0 6px 18px #0006)}
+.hide{display:none}
+#toast{position:fixed;bottom:max(12px,env(safe-area-inset-bottom));left:12px;right:12px;max-width:520px;margin:auto;text-align:center;color:#fff;background:rgba(220,38,38,.85);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid #fff4;border-radius:14px;padding:12px;z-index:9}
+#tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:8px 0 12px}
+@media(min-width:620px){#tiles{grid-template-columns:repeat(3,1fr)}}
+.tile{display:flex;flex-direction:column;gap:2px;padding:8px 8px 11px;border-radius:18px;background:rgba(255,255,255,.1);border:1px solid var(--b);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 #fff4,0 6px 20px #0004;transition:transform .15s,box-shadow .15s,border-color .15s;user-select:none}
+.tile .img{border-radius:12px;overflow:hidden;aspect-ratio:8/5;margin-bottom:6px;background:linear-gradient(135deg,var(--c1),var(--c2))}
+.tile .img svg{display:block;width:100%;height:100%;max-width:none;margin:0;filter:none}
+.tile b{font-size:.95rem;line-height:1.2}.tile span{font-size:.8rem;color:var(--m)}
+.tile.pick{cursor:pointer}.tile.pick:hover{transform:translateY(-3px)}
+.tile.on{border-color:#67e8f9;box-shadow:0 0 0 2px #67e8f9,0 0 28px #67e8f988}
+.tile.soon{opacity:.55;filter:saturate(.6)}
+.un{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.un span{padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.1);font-size:.85rem}.un .t{background:#67e8f9;color:#0b1026;font-weight:700}
+.mid{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0}
+.hand{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:12px 0}
+.uc{width:54px;height:80px;border-radius:10px;background:var(--cc,#334155);border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.3rem;color:#fff;box-shadow:0 4px 12px #0006;user-select:none}
+.uc i{font-style:normal;text-shadow:0 1px 4px #0008}
+.uc.back{background:linear-gradient(135deg,#1e293b,#6366f1);font-size:.7rem}
+.uc.no{opacity:.4}.uc.ok{cursor:pointer;box-shadow:0 0 0 3px #67e8f9,0 0 16px #67e8f9aa;transform:translateY(-4px)}
+.cb{width:22px;height:22px;border-radius:50%;border:2px solid #fff}
+.cp{display:flex;gap:8px}.cp button{min-height:46px;margin:0}
+@media(min-width:700px){.uc{width:64px;height:94px;font-size:1.5rem}}
+.rv{padding:14px;border-radius:16px;background:rgba(255,255,255,.12);border:1px solid var(--b);text-align:center;margin:8px 0;font-size:1.05rem}.rv b{font-size:1.4rem}
+</style></head><body><main>
+<h1>🎲 Spielesammlung</h1>
+<div id="home" class="card">
+ <input id="nm" placeholder="Dein Name" maxlength="14">
+ <button id="mk">Neue Lobby erstellen</button><hr>
+ <input id="cd" placeholder="Lobby-Code" maxlength="5" style="text-transform:uppercase">
+ <button id="jn" class="s">Beitreten</button>
+ <p id="ss" style="color:var(--m);margin:6px 0 0;min-height:1.4em"></p>
+</div>
+<div id="lob" class="card hide">
+ <div class="code" id="lc"></div>
+ <button id="cp" class="s">Einladungslink kopieren</button>
+ <h3>Spieler (<span id="cnt"></span>/20)</h3><div id="pl"></div>
+ <h3>Spiele</h3><div id="tiles"></div>
+ <div id="hb"><button id="st">Spiel starten</button></div>
+ <p id="wt" class="hide">Warte auf den Host …</p>
+</div>
+<div id="game" class="card hide"></div>
+<div id="toast" class="hide"></div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script>
+const \$=s=>document.querySelector(s),R=n=>Math.floor(Math.random()*n);
+const CH='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const COL=['#e53935','#f9a825','#43a047','#1e88e5','#8e24aa','#00897b','#6d4c41','#546e7a','#ec407a','#9e9d24'];
+const tp=s=>s.split(' ').map(x=>x.split(',').map(Number));
+let peer,host=false,conns={},conn,code='',L={players:[],game:null},NM=[],GM=null,SEL=null,VS=null,UW=-1,gs=null,my=-1;
+const st=m=>{const e=\$('#ss');if(e)e.textContent=m};
+function toast(m){const t=\$('#toast');t.textContent=m;t.classList.remove('hide');setTimeout(()=>t.classList.add('hide'),4000)}
+
+/* ---------- Spiele ---------- */
+const G={};
+/* Mensch ärgere dich nicht (2-4 Spieler) */
+const SX=[0,10,20,30],
+RING=tp('0,4 1,4 2,4 3,4 4,4 4,3 4,2 4,1 4,0 5,0 6,0 6,1 6,2 6,3 6,4 7,4 8,4 9,4 10,4 10,5 10,6 9,6 8,6 7,6 6,6 6,7 6,8 6,9 6,10 5,10 4,10 4,9 4,8 4,7 4,6 3,6 2,6 1,6 0,6 0,5'),
+LANE=['1,5 2,5 3,5 4,5','5,1 5,2 5,3 5,4','9,5 8,5 7,5 6,5','5,9 5,8 5,7 5,6'].map(tp),
+HOUSE=['0,0 1,0 0,1 1,1','9,0 10,0 9,1 10,1','9,9 10,9 9,10 10,10','0,9 1,9 0,10 1,10'].map(tp);
+const ab=(q,x)=>(SX[q]+x)%40,
+xy=(q,x,k)=>x<0?HOUSE[q][k]:x<40?RING[ab(q,x)]:LANE[q][x-40];
+function lg(s,i){ // erlaubte Figuren
+ const P=s.pc[i],r=s.roll;let l=[];
+ P.forEach((pos,k)=>{const np=pos<0?(r==6?0:-1):pos+r;if(np<0||np>43||P.includes(np))return;l.push(k)});
+ if(r==6){const o=l.filter(k=>P[k]<0);if(o.length)return o}
+ if(P.includes(-1)){const c=l.filter(k=>P[k]===0);if(c.length)return c}
+ return l}
+const nx=s=>{s.turn=(s.turn+1)%s.n;s.roll=null;s.tries=0};
+G.mensch={name:'Mensch ärgere dich nicht',min:2,max:4,
+ init(n){return{n,seat:n==2?[0,2]:[0,1,2,3].slice(0,n),pc:Array.from({length:n},()=>[-1,-1,-1,-1]),turn:0,roll:null,tries:0,win:null,last:null}},
+ act(s,i,a){
+  if(s.win!=null||s.turn!==i)return;const P=s.pc[i];
+  if(a.t=='roll'&&s.roll==null){
+   const r=1+R(6);s.roll=r;s.last={p:i,r,skip:false};
+   if(!lg(s,i).length){
+    s.last.skip=true;s.tries++;
+    if(P.every(x=>x<0||x>=40)&&s.tries<3)s.roll=null;else nx(s)}
+  }else if(a.t=='move'&&s.roll!=null&&lg(s,i).includes(a.k)){
+   const r=s.roll,x=P[a.k]<0?0:P[a.k]+r;P[a.k]=x;
+   if(x<40){const A=ab(s.seat[i],x);
+    s.pc.forEach((Q,q)=>{if(q!==i)Q.forEach((y,j)=>{if(y>=0&&y<40&&ab(s.seat[q],y)===A)Q[j]=-1})})}
+   if(P.every(y=>y>=40))s.win=i;else if(r==6){s.roll=null;s.tries=0}else nx(s)}
+ },
+ view(s,i,N){
+  const sp=s.seat,mv=s.turn===i&&s.roll!=null&&s.win==null?lg(s,i):[];
+  const c=(x,y,f,r,e='')=>`<circle cx="${x*40+20}" cy="${y*40+20}" r="${r}" fill="${f}" stroke="#fff6" ${e}/>`;
+  let h='<svg viewBox="0 0 440 440">';
+  RING.forEach((q,j)=>{const z=SX.indexOf(j);h+=c(q[0],q[1],z>=0?COL[z]+'66':'#ffffffd9',15)});
+  LANE.forEach((l,q)=>l.forEach(p=>h+=c(p[0],p[1],COL[q]+'66',13)));
+  HOUSE.forEach((l,q)=>l.forEach(p=>h+=c(p[0],p[1],COL[q]+'55',13)));
+  s.pc.forEach((P,p)=>P.forEach((x,k)=>{
+   const [cx,cy]=xy(sp[p],x,k),can=p===i&&mv.includes(k);
+   h+=c(cx,cy,COL[sp[p]],can?14:12,`stroke="${can?'#fde047':'#fff'}" stroke-width="${can?5:2}"`+(can?` style="cursor:pointer" data-a='{"t":"move","k":${k}}'`:''))}));
+  h+='</svg>';
+  const nm=p=>`<b style="color:${COL[sp[p]]}">${N[p]}</b>`;
+  h+=`<p>${s.win!=null?'🏆 '+nm(s.win)+' hat gewonnen!':nm(s.turn)+' ist dran'}</p>`;
+  if(s.last)h+=`<p>${nm(s.last.p)} würfelte <b>${s.last.r}</b>${s.last.skip?' – kein Zug möglich':''}</p>`;
+  if(s.win==null&&s.turn===i)h+=s.roll==null?`<button data-a='{"t":"roll"}'>🎲 Würfeln</button>`:'<p>Wähle eine markierte Figur.</p>';
+  return h}};
